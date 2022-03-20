@@ -33,6 +33,66 @@ Per maggiori informazioni su perche usare docker, [cliccate qui](https://jstobig
 Per installare Docker, [seguite questo indice](https://jstobigdata.com/docker-installation/) ed installate preferibilmente la versione `stable`. I link nell'indice rimandano alla documentazione ufficiale.
 
 
+## Dockefile guidelines 
+
+* Impareremo a creare un'immagine Docker attraverso un Dockerfile
+* Il Dockerfile contiene le istruzioni per creare l'immagine
+* Attraverso l'istruzione `docker build` si crea l'immagine dal Dockerfile
+* La cartella in cui buildiamo l'immagine è chiamata **context**
+* Dai logs della build possiamo osservare vari **step**
+* Dato che l'immagine viene costruita a strati, ogni step è un'immagine intermedia
+* Il sistema di caching utilizza le immagini intermedie per velocizzare il processo 
+
+
+Il file `NonLayeredExample.Dockerfile` contiene il primo esempio.
+
+Best practice: 
+
+* Disporre i pacchetti da installare in ordine alfabetico
+* Iniziare il Dockerfile con step che con molta probabilità non cambieranno
+* Minimizzare il numero di step
+* Utilizzare il .dockerignore per escludere file/cartelle dal context
+* Un container dovrebbe avere una sola responsabilità
+
+## Examples 
+
+Simple Logger 
+
+```bash
+docker build --tag tap-py-logger -f Dockerfile.Logger . 
+docker run -it --name tap-simple-logger tap-py-logger  
+```
+
+Log Server
+```bash
+docker build --tag tap-py-log-server -f Dockerfile.Server . 
+docker run -it -p 5000:5000 --name tap-server tap-py-log-server
+```
+
+Log Server with volume
+```bash
+docker build --tag tap-py-log-server -f Dockerfile.Server . 
+docker run -it -p 5000:5000 --name tap-server -v "$(pwd)"/server/logs:/app/logs  tap-py-log-server
+```
+
+Remote Logger and Log Server with volume
+```bash
+# build & run the remote server (detached).
+docker build --tag tap-py-log-server -f Dockerfile.Server . 
+docker run -d -p 5000:5000 --name tap-server -v "$(pwd)"/server/logs:/app/logs  tap-py-log-server
+
+# build & run the remote logger (interactive)
+docker build --tag tap-py-remlog -f Dockerfile.RemoteLogger . 
+docker run -it --name tap-remote-logger tap-py-remlog
+
+# create a network
+docker network create tap-network
+docker network connect tap-network tap-server
+docker network connect tap-network tap-remote-logger
+```
+
+
 ## Link
 * [⚠️ Docker cheatsheet](https://dockerlabs.collabnix.com/docker/cheatsheet/)
 * [Advanced Docker Tutorial](https://jstobigdata.com/docker/advanced-docker-tutorial/)
+* [Dockerfile tutorial and best practices](https://takacsmark.com/dockerfile-tutorial-by-example-dockerfile-best-practices-2018/)
