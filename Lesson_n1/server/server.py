@@ -1,7 +1,7 @@
-from flask import Flask, request
+from flask import Flask, request, redirect
+import base64
 
 app = Flask(__name__)
-
 
 def log_to_file(message: str, ip: str):
     with open(f'logs/api.log', 'a+') as logfile:
@@ -9,12 +9,17 @@ def log_to_file(message: str, ip: str):
 
 
 @app.route("/log", methods=['GET'])
-def hello():
+def log():
     query = request.args.to_dict()
     messg = query.get('message', 'not specified.')
     log_to_file(messg, request.remote_addr)
     print('api called.')    
     return 'successfully logged.'
+
+
+@app.route("/", methods=['GET'])
+def home():
+    return 'My logs server home-page.'
 
 
 if __name__ == "__main__":

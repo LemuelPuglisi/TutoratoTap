@@ -60,19 +60,19 @@ Simple Logger
 
 ```bash
 docker build --tag tap-simple-logger -f Dockerfile.Logger . 
-docker run -it --name simple-logger tap-simple-logger  
+docker run --rm -it --name simple-logger tap-simple-logger  
 ```
 
 Log Server
 ```bash
 docker build --tag tap-logs-server -f Dockerfile.Server . 
-docker run -it -p 5000:5000 --name logs-server tap-logs-server
+docker run --rm -it -p 5000:5000 --name logs-server tap-logs-server
 ```
 
 Log Server with volume
 ```bash
 docker build --tag tap-logs-server -f Dockerfile.Server . 
-docker run -it -p 5000:5000 --name logs-server -v "$(pwd)"/server/logs:/app/logs  tap-logs-server
+docker run --rm -it -p 5000:5000 --name logs-server -v "$(pwd)"/server/logs:/app/logs  tap-logs-server
 ```
 
 Remote Logger and Log Server with volume
