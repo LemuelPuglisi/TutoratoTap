@@ -1,7 +1,7 @@
 import requests
 import time 
 
-SERVER_HOSTNAME='http://tap-server:5000/log'
+SERVER_HOSTNAME='http://logs-server:5000/log'
 
 def remote_log(msg: str):
     query = { 'message': msg }

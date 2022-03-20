@@ -59,36 +59,36 @@ Best practice:
 Simple Logger 
 
 ```bash
-docker build --tag tap-py-logger -f Dockerfile.Logger . 
-docker run -it --name tap-simple-logger tap-py-logger  
+docker build --tag tap-simple-logger -f Dockerfile.Logger . 
+docker run -it --name simple-logger tap-simple-logger  
 ```
 
 Log Server
 ```bash
-docker build --tag tap-py-log-server -f Dockerfile.Server . 
-docker run -it -p 5000:5000 --name tap-server tap-py-log-server
+docker build --tag tap-logs-server -f Dockerfile.Server . 
+docker run -it -p 5000:5000 --name logs-server tap-logs-server
 ```
 
 Log Server with volume
 ```bash
-docker build --tag tap-py-log-server -f Dockerfile.Server . 
-docker run -it -p 5000:5000 --name tap-server -v "$(pwd)"/server/logs:/app/logs  tap-py-log-server
+docker build --tag tap-logs-server -f Dockerfile.Server . 
+docker run -it -p 5000:5000 --name logs-server -v "$(pwd)"/server/logs:/app/logs  tap-logs-server
 ```
 
 Remote Logger and Log Server with volume
 ```bash
 # build & run the remote server (detached).
-docker build --tag tap-py-log-server -f Dockerfile.Server . 
-docker run -d -p 5000:5000 --name tap-server -v "$(pwd)"/server/logs:/app/logs  tap-py-log-server
+docker build --tag tap-logs-server -f Dockerfile.Server . 
+docker run -d -p 5000:5000 --name logs-server -v "$(pwd)"/server/logs:/app/logs  tap-logs-server
 
 # build & run the remote logger (interactive)
-docker build --tag tap-py-remlog -f Dockerfile.RemoteLogger . 
-docker run -it --name tap-remote-logger tap-py-remlog
+docker build --tag tap-remote-logger -f Dockerfile.RemoteLogger . 
+docker run -it --name remote-logger tap-remote-logger
 
 # create a network
 docker network create tap-network
-docker network connect tap-network tap-server
-docker network connect tap-network tap-remote-logger
+docker network connect tap-network logs-server
+docker network connect tap-network remote-logger
 ```
 
 

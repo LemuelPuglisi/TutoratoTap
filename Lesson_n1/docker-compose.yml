@@ -1,0 +1,52 @@
+version: '3'
+
+services:
+
+  #-------------------------------#
+  # 🖥️ Logs server                #
+  #-------------------------------#
+
+  logs-server:
+    container_name: logs-server
+    build:
+      context: .
+      dockerfile: Dockerfile.Server
+    image: tap-logs-server
+    ports: 
+      - "5000:5000"
+    volumes: 
+      - $PWD/server/logs/:/app/logs/
+    networks:
+      - logs-network
+    
+  #-------------------------------#
+  # 📱 Logs client 1️⃣              #
+  #-------------------------------#
+
+  remote-logger-1:
+    container_name: remote-logger-1
+    build:
+      context: .
+      dockerfile: Dockerfile.RemoteLogger
+    image: tap-remote-logger
+    networks:
+      - logs-network
+
+  #-------------------------------#
+  # 📱 Logs client 2️⃣             #
+  #-------------------------------#
+
+  remote-logger-2:
+    container_name: remote-logger-2
+    build:
+      context: logger
+      dockerfile: Dockerfile.RemoteLogger
+    image: tap-remote-logger
+    networks:
+      - logs-network
+
+networks:
+
+  logs-network:
+    name: logs-network
+    driver: bridge
