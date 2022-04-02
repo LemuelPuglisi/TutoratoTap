@@ -30,6 +30,14 @@ nc localhost 44444
 
 L'input verrà inviato alla componente source dell'agent di Flume, che inserirà il messaggio nel canale e che a sua volta verrà consumato da un sink di test, chiamato logSink.
 
+## Logstash 
+
+Effettuare il pull dell'immagine dal registry di Elastic:
+
+```bash
+docker pull docker.elastic.co/logstash/logstash:8.1.1
+```
+* Installare il plugin http output 
 
 
 ## Ce so i linkkk 📍
