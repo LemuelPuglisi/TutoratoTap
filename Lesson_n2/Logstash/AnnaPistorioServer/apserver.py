@@ -13,6 +13,7 @@ ap_quotes = [
     'I really love engineers'           # Da informatico, mi dissocio fortemente. 
 ]
 
+
 @apserver.route("/random-quote")
 def random_quote():
     quote = random.choice(ap_quotes)    
@@ -20,6 +21,7 @@ def random_quote():
         response=json.dumps({ "message": quote }),
         mimetype='application/json'
     )
+
 
 if __name__ == "__main__":
     apserver.run(debug=True,

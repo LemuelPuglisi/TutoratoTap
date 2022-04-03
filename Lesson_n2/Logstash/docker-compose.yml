@@ -17,6 +17,20 @@ services:
       - logstash-network
 
   #-------------------------------#
+  # 🖥️ AP Listener                #
+  #-------------------------------#
+
+  aplistener:
+    build:
+      context: AnnaPistorioListener
+      dockerfile: Dockerfile
+    image: anna-pistorio-listener
+    ports: 
+      - "12000:12000"
+    networks:
+      - logstash-network
+
+  #-------------------------------#
   # 🖥️ Original Image             #
   #-------------------------------#
   
@@ -33,6 +47,8 @@ services:
     environment: 
         # limite RAM 1gb. 
         - "LS_JAVA_OPTS=-Xms1g -Xmx1g"
+    ports:
+      - "10155:10155"
     networks:
         - logstash-network
 
