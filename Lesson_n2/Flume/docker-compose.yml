@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+
+  #-------------------------------#
+  # Flume service                 #
+  #-------------------------------#
+
+  tap-flume:
+    container_name: tap-flume
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: tapflume
+    ports: 
+      - "44444:44444"    

@@ -1,0 +1,60 @@
+version: '3.7'
+
+services:
+
+  #-------------------------------#
+  # 🖥️ AP server                  #
+  #-------------------------------#
+
+  apserver:
+    build:
+      context: AnnaPistorioServer
+      dockerfile: Dockerfile
+    image: anna-pistorio-server
+    ports: 
+      - "5000:5000"
+    networks:
+      - logstash-network
+
+  #-------------------------------#
+  # 🖥️ AP Listener                #
+  #-------------------------------#
+
+  aplistener:
+    build:
+      context: AnnaPistorioListener
+      dockerfile: Dockerfile
+    image: anna-pistorio-listener
+    ports: 
+      - "12000:12000"
+    networks:
+      - logstash-network
+
+  #-------------------------------#
+  # 🖥️ Original Image             #
+  #-------------------------------#
+  
+  logstash:
+    build:
+      context: LogstashDocker
+      dockerfile: Dockerfile
+    image: sentiment-analysis-logstash
+    # image: docker.elastic.co/logstash/logstash:7.11.2
+    depends_on:
+      - apserver
+    volumes: 
+        - $PWD/LogstashDocker/pipeline/:/usr/share/logstash/pipeline/
+    environment: 
+        # limite RAM 1gb. 
+        - "LS_JAVA_OPTS=-Xms1g -Xmx1g"
+    ports:
+      - "10155:10155"
+    networks:
+        - logstash-network
+
+
+networks:
+
+  logstash-network:
+    name: logstash-network
+    driver: bridge
