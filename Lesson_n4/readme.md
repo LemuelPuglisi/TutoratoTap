@@ -63,6 +63,42 @@ Il DAG rappresenta una sequenza di calcoli eseguiti sui dati dove ogni nodo è u
 
 
 
+## Come funziona Spark?
+
+Spark segue una architettura master-slave, con due principali processi, Driver (master) e Worker ed un Cluster Manager.  
+
+
+
+![Spark cluster components](readme.assets/cluster-overview.png)
+
+
+
+Un cluster Spark ha un singolo master ed un numero arbitrario di workers. Il driver e gli executor eseguono codici Java indipendenti, questo implica che è possibile scalare l'architettura sia verticalmente, aumentando le prestazioni della macchina, sia orizzontalmente, andando ad aggiungere nodi worker al cluster. 
+
+> **Idea vincente di Spark**.
+> *The advantage  of having DAG and RDD is that they replace the disk IO with in-memory  operations and support in-memory data sharing across DAGs, so that  different jobs can be performed with the same data allowing complicated  workflows.* 
+
+
+
+## Cosa succede al submit di uno Spark Job?
+
+La pipeline è la seguente: 
+
+* Un utente sottomette al sistema un programma
+* Il driver converte le trasformazioni e le azioni sugli RDD in un DAG
+* Il driver ottimizza l'esecuzione del programma 
+* Il driver trasforma il DAG in un piano di esecuzione
+* Il driver divide il piano di esecuzione dei mini-task 
+* Il driver comunica con il cluster manager e negozia le risorse
+* Il cluster manager avvia gli executor sui nodi worker per conto del driver
+* I mini-task vengono inviati al cluster manager, e quindi agli executor.
+* Prima che il programma cominci, gli executor comunicano con il driver "registrandosi", così da fornire al driver una visione completa di tutti gli executor.
+* Gli executor iniziano a lavorare sui task a loro assegnati. 
+* In base al posizionamento dei dati, il driver può assegnare task a certi executor piuttosto che ad altri (l'idea è quella di sfruttare la località dei dati per evitare il loro trasferimento).
+* Alla fine del programma, gli executor termineranno e le risorse verranno rilasciate. 
+
+
+
 
 
 ## Credits
