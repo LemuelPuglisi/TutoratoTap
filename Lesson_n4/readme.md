@@ -98,11 +98,22 @@ La pipeline è la seguente:
 * Alla fine del programma, gli executor termineranno e le risorse verranno rilasciate. 
 
 
+## Installiamo PySpark 
 
+Creiamo un environment anaconda per isolare i package da installare: 
 
+```bash 
+conda create -n pysparkenv
+```
+
+Dopo aver attivato l'environment, installiamo il pacchetto `pyspark` attenzionando il fatto che esistono più versioni del package, quella per Spark 2.7 e quella per Spark 3.2, il nostro docker-compose utilizza Spark 3.2. Settando la variabile di ambiente `PYSPARK_HADOOP_VERSION=3.2`, il processo andrà ad installare automaticamente la giusta versione del pacchetto. 
+
+```bash
+PYSPARK_HADOOP_VERSION=3.2 pip install pyspark -v
+```
 
 ## Credits
 
 * [Apache Spark Architecture Explained](https://www.projectpro.io/article/apache-spark-architecture-explained-in-detail/338#toc-1)
 * [Mastering Apache Spark - Gitbook](https://mallikarjuna_g.gitbooks.io/spark/content/spark-overview.html)
-
+* [Apache Spark - Computerphile](https://www.youtube.com/watch?v=tDVPcqGpEnM)
