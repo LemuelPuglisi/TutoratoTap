@@ -16,7 +16,7 @@ Una volta installato Spark (vedremo come), andremo a scrivere un programma che a
 
 > Spark Driver - Il master node di un'applicazione Spark. 
 
-È il punto centrale ed entry point della [Spark Shell](https://spark.apache.org/docs/latest/quick-start.html#interactive-analysis-with-the-spark-shell), un programma che permette di utilizzare le funzionalità di Spark da riga di comando.  Il driver avvia la funzione `main()` dell'applicazione da noi scritta, si occupa della creazione dello Spark Context e degli RDD, e inoltre applica le trasformazioni e azioni sugli RDD (di cui parleremo dopo). Il driver contiene molte componenti al suo interno (es. DAGScheduler, TaskScheduler, etc.) che servono a tradurre il codice utente in task eseguiti nel cluster. I task principali eseguiti dal driver sono per l'appunto due: 
+È il punto centrale ed entry point della [Spark Shell](https://spark.apache.org/docs/latest/quick-start.html#interactive-analysis-with-the-spark-shell), un programma che permette di utilizzare le funzionalità di Spark da riga di comando.  Il driver avvia la funzione `main()` dell'applicazione da noi scritta, si occupa della creazione dello Spark Context e degli RDD. Il driver contiene molte componenti al suo interno (es. DAGScheduler, TaskScheduler, etc.) che servono a tradurre il codice utente in task eseguiti nel cluster. I task principali eseguiti dal driver sono per l'appunto due: 
 
 1. Convertire il programma utente in task 
 2. Pianificare l'esecuzione dei task con gli Executors
