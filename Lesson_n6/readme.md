@@ -97,6 +97,38 @@ Ogni funzione applicata ad un DStream si traduce in operazioni applicate ad ognu
 
 ![image-20220515124847022](readme.assets/image-20220515124847022.png)
 
+### DStream e Receivers
+
+Un **Input DStream** è un DStream che rappresenta gli input ricevuti da una sorgente dati streaming. Ad ogni Input DStream è associato un oggetto Recevier che riceve i dati dalla sorgente  e li conserva nella memoria di Spark per processarli. Spark Streaming ci mette a disposizione due tipi di Streaming Sources: 
+
+*  **Basic Sources**: sorgenti streaming disponibili direttamente dalla StreamContext API (es. TCP socket)
+* **Advanced Sources**: richiedono il linking di dipendenze extra (es. Kafka, Kinesis)
+
+Nota: nella nostra applicazione possiamo inizializzare più input DStream che riceveranno dati simultaneamente. 
+
+Nota: un receiver occupa un core, quindi vanno istanziati un numero di core maggiore del numero di receiver, altrimenti non saranno disponibili dei core per il processing dei dati ([maggiori info](https://spark.apache.org/docs/latest/streaming-programming-guide.html#points-to-remember-1)). 
+
+
+
+### DStream - Further reading
+
+* [File Stream](https://spark.apache.org/docs/latest/streaming-programming-guide.html#file-streams)
+* [Custom Receivers](https://spark.apache.org/docs/latest/streaming-programming-guide.html#streams-based-on-custom-receivers)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
