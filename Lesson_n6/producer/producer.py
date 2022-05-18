@@ -3,14 +3,13 @@ import pandas as pd
 import confluent_kafka as ck
 
 from confluent_kafka import Producer
-from tqdm import tqdm
 from time import sleep
 
 KAFKA_TOPIC = 'cardiology'
 SECONDS_BETWEEN_EMIT = 1
 
 conf = {
-    'bootstrap.servers': 'localhost:9092', 
+    'bootstrap.servers': 'broker:29092', 
     'client.id': socket.gethostname()   
 }
 
@@ -18,7 +17,7 @@ conf = {
 def get_dataset():
     """ Read heart.csv and return a dataframe containing all the data.
     """
-    dataset = pd.read_csv('training/data/heart.csv')
+    dataset = pd.read_csv('data/heart.csv')
     dataset = dataset.drop('output', axis=1)
     return dataset
 
@@ -26,8 +25,7 @@ def get_dataset():
 def emit_messages(producer, dataset):
     """ Emit a record to Kafka every n seconds.
     """
-    records = len(dataset)
-    for idx, row in tqdm(dataset.iterrows(), total=records):
+    for idx, row in dataset.iterrows():
         json = row.to_json()
         producer.produce(KAFKA_TOPIC, key=str(idx), value=json)
         producer.flush()

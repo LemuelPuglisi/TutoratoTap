@@ -17,6 +17,20 @@ services:
           - broker 
 
     #-------------------------------#
+    # Event producer                #
+    #-------------------------------#
+
+    event-producer:
+        build: 
+            context: producer
+        container_name: event-producer
+        networks:
+          - tutorato-tap-net
+        depends_on:
+          - zookeeper
+          - broker 
+
+    #-------------------------------#
     # Zookeeper (for Kafka) 🦓      #
     #-------------------------------#
 
