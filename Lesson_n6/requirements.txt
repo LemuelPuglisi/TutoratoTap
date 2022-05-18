@@ -1,0 +1,4 @@
+pyspark>=3.2.1
+confluent-kafka>=1.8.2
+pandas
+tqdm

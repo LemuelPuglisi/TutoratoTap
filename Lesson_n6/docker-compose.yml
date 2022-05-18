@@ -1,0 +1,119 @@
+
+version: '3.7'
+services: 
+
+    #-------------------------------#
+    # Spark                         #
+    #-------------------------------#
+
+    spark:
+        build: 
+            context: streaming
+        container_name: spark-streaming
+        networks:
+          - tutorato-tap-net
+        depends_on:
+          - zookeeper
+          - broker 
+
+    #-------------------------------#
+    # Event producer                #
+    #-------------------------------#
+
+    event-producer:
+        build: 
+            context: producer
+        container_name: event-producer
+        networks:
+          - tutorato-tap-net
+        depends_on:
+          - zookeeper
+          - broker 
+
+    #-------------------------------#
+    # Zookeeper (for Kafka) 🦓      #
+    #-------------------------------#
+
+    zookeeper:
+        image: confluentinc/cp-zookeeper:7.0.1
+        container_name: zookeeper
+        environment:
+            ZOOKEEPER_CLIENT_PORT: 2181
+            ZOOKEEPER_TICK_TIME: 2000
+        networks:
+          - tutorato-tap-net
+
+    #-------------------------------#
+    # Kafka broker 📨               #
+    #-------------------------------#
+
+    broker:
+        image: confluentinc/cp-kafka:7.0.1
+        container_name: broker
+        ports:
+        - "9092:9092"
+        depends_on:
+        - zookeeper
+        environment:
+            KAFKA_BROKER_ID: 1
+            KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
+            KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://broker:29092
+            KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+            KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+            KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+        networks:
+          - tutorato-tap-net
+
+    #-------------------------------#
+    # Kafka User interface  🖥️      #
+    #-------------------------------#
+
+    kafka-ui:
+        image: provectuslabs/kafka-ui
+        container_name: kafka-ui
+        depends_on:
+        - zookeeper
+        - broker
+        ports:
+        - "10000:8080"
+        restart: always
+        environment:
+            KAFKA_CLUSTERS_0_NAME: local
+            KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: broker:29092
+            KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
+        networks:
+          - tutorato-tap-net
+
+  #-------------------------------#
+  # Kafka init topics 🚀          #
+  #-------------------------------#
+
+    init-kafka:
+        image: confluentinc/cp-kafka:6.1.1
+        depends_on:
+        - broker
+        - zookeeper
+        - kafka-ui
+        entrypoint: [ '/bin/sh', '-c' ]
+        command: |
+            "
+            # blocks until kafka is reachable
+            kafka-topics --bootstrap-server broker:29092 --list
+
+            echo -e 'Creating kafka topics'
+            kafka-topics --bootstrap-server broker:29092 --create --if-not-exists --topic cardiology --replication-factor 1 --partitions 1
+
+            echo -e 'Successfully created the following topics:'
+            kafka-topics --bootstrap-server broker:29092 --list
+            "
+        networks:
+          - tutorato-tap-net
+
+
+
+networks:
+
+  tutorato-tap-net:
+    name: tutorato-tap-net
+    driver: bridge
