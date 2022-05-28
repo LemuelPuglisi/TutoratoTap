@@ -172,7 +172,7 @@ GET /inspections/_search
 
 ### Query tutorial
 
-```json
+```
 # Inserimento sull'indice e implicita creazione di quest'ultimo
 
 POST /inspections/_doc
@@ -252,6 +252,134 @@ GET /inspections/_search
   }
 }
 
+# Combiniamo le query: troviamo una mensa con High Risk: 
+# possiamo enfatizzare l'importanza di una condizione attraverso il BOOST
 
+GET /inspections/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+          {
+            "match": {
+              "business": {
+                "query": "mensa", 
+                "boost": 3
+              }
+            }
+          }, 
+          {
+            "match_phrase": {
+              "risk_category": "High Risk"
+            }
+          }
+        ]
+    }
+  }
+}
+
+# Possiamo anche utilizzare la negazione per trovare tutti i ristoranti 
+# che non sono mense!
+
+GET /inspections/_search
+{
+  "query": {
+    "bool": {
+      "must_not": [
+          {
+            "match": {
+              "business": "mensa"
+            }
+          }
+        ]
+    }
+  }
+}
+
+# MAPPING! 
+
+GET inspections/_mapping
+
+# notiamo che i valori non hanno il casting giusto, 
+# ad esempio vorremmo che la business_location sia un geodato, 
+# così da poterlo utilizzare nelle mappe di Kibana. 
+
+DELETE inspections
+
+PUT inspections
+
+# specifichiamo il mapping dei dati
+PUT inspections/_mapping
+{
+  "properties": {
+      
+      "business": {
+        "type" : "text",
+        "fields" : {
+          "keyword" : {
+            "type" : "keyword",
+            "ignore_above" : 256
+          }
+        }
+      },
+      
+      "business_city" : {
+        "type" : "text",
+        "fields" : {
+          "keyword" : {
+            "type" : "keyword",
+            "ignore_above" : 256
+          }
+        }
+      },
+      "business_latitude" : {
+        "type" : "text",
+        "fields" : {
+          "keyword" : {
+            "type" : "keyword",
+            "ignore_above" : 256
+          }
+        }
+      },
+      "business_location" : {
+        "type": "geo_point"
+      },
+      "business_longitude" : {
+        "type" : "text",
+          "fields" : {
+            "keyword" : {
+              "type" : "keyword",
+              "ignore_above" : 256
+            }
+          }
+        },
+      "inspection_date" : {
+        "type" : "date"
+      },
+      "risk_category" : {
+        "type" : "text",
+        "fields" : {
+          "keyword" : {
+            "type" : "keyword",
+            "ignore_above" : 256
+          }
+        }
+      },
+      "violation_description" : {
+        "type" : "text",
+        "fields" : {
+          "keyword" : {
+            "type" : "keyword",
+            "ignore_above" : 256
+        }
+      }
+    }  
+  }
+}
+
+GET inspections/_search
 ```
 
+## Credits
+
+* [Elasticsearch - Getting Started webinar](https://www.elastic.co/webinars/getting-started-elasticsearch)
