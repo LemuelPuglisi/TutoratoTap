@@ -73,14 +73,14 @@ docker-compose down -v
 
 Per passare dei settings specifici attraverso file YAML potete attaccare la vostra configurazione ai rispettivi container: 
 
-(Elasticsearch conf aggiunte sul servizio `es01`)
+(Elasticsearch conf aggiunte al servizio `es01`)
 ```
     volumes:
       - ./es01.yml:/usr/share/elasticsearch/config/elasticsearch.yml
       - ...
 ```
 
-(Kibana conf aggiunte sul servizio `kibana`)
+(Kibana conf aggiunte al servizio `kibana`)
 ```
     volumes:
       - ./kibana.yml:/usr/share/kibana/config/kibana.yml
