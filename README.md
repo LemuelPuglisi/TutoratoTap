@@ -10,7 +10,7 @@ Teaching materials for [Technologies For Advanced Programming](http://syllabus.u
 | [Lesson 5](https://github.com/LemuelPuglisi/TutoratoTap/tree/main/Lesson_n5) | Apache Spark MLLib               |
 | [Lesson 6](https://github.com/LemuelPuglisi/TutoratoTap/tree/main/Lesson_n6) | Apache Spark Streaming               |
 | [Lesson 7](https://github.com/LemuelPuglisi/TutoratoTap/tree/main/Lesson_n7) | Deep dive into Elasticsearch |
-| Lesson 8                                                     | -                                |
+| [Lesson 8](https://github.com/LemuelPuglisi/TutoratoTap/tree/main/Lesson_n8) | Connecting Spark to Elasticsearch |
 | Lesson 9                                                     | -                                |
 | Lesson 10                                                    | -                                |
 
