@@ -108,5 +108,21 @@ Salviamo la mappa ed aggiungiamola alla dashboard.
 
 
 
+## Import/Export della Dashboard
+
+Una volta costruita la Dashboard, è possibile salvarla insieme a tutti gli oggetti inseriti (visualizzazioni e mappe) in un file di tipo `ndjson`. Per fare ciò, cliccate sul menù a sinistra e dirigetevi su `Management > Stack Management`, nella tendina a sinistra cliccate su `Kibana > Saved Objects` cercate la vostra Dashboard ed esportatela, assicurandovi di includere gli oggetti al suo interno.  
+
+![image-20220611124555267](readme.assets/image-20220611124555267.png)
+
+Quando tirate sù una nuova istanza di Kibana, dovrete stare attenti a ricreare la Data View allo stesso modo, così che la Dashboard che avete salvato possa operare con lo stesso tipo di dati. Per ricaricare la Dashboard salvata rientrate nella sezione `Saved Objects` e cliccate su `import` 
+
+![image-20220611124835025](readme.assets/image-20220611124835025.png) 
+
+
+
+### Import dashboard tramite API
+
+Per chi volesse cimentarsi, esiste la [Import Objects API](https://www.elastic.co/guide/en/kibana/current/saved-objects-api-import.html) per importare degli oggetti in formato `ndjson` su Kibana. Attraverso questa API è possibile caricare la Dashboard. E' possibile creare uno script in bash che carichi automaticamente la Dashboard comunicando con il container di Kibana. Questo script potrebbe addirittura essere containerizzato e inserito nel docker-compose, in modo che si avvii dopo Kibana e importi la Dashboard automaticamente. 
+
 
 
