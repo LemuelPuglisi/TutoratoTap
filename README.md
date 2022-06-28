@@ -12,7 +12,7 @@ Teaching materials for [Technologies For Advanced Programming](http://syllabus.u
 | [Lesson 7](https://github.com/LemuelPuglisi/TutoratoTap/tree/main/Lesson_n7) | Deep dive into Elasticsearch |
 | [Lesson 8](https://github.com/LemuelPuglisi/TutoratoTap/tree/main/Lesson_n8) | Connecting Spark to Elasticsearch |
 | [Lesson 9](https://github.com/LemuelPuglisi/TutoratoTap/tree/main/Lesson_n9) | Kibana visualization 101 |
-| Lesson 10                                                    | -                                |
+| Lesson 10                                                    | Projects correction  |
 
 In each directory you can find useful links and some of the concept briefly explained, good study!
 
